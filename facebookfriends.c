@@ -42,7 +42,7 @@ void display(struct node *nodeptr) {
 
 int main(){
     int choice, num, likes;
-    char name;
+    char name[20];
     head = NULL;
     while(1){
     printf("\n----MENU----");
@@ -64,7 +64,7 @@ int main(){
         printf("\n----Facebook friend list----");
         display(head);
                 break;
-        case 3: printf("\nHighest likes in friend list is friend %c : %d",name, maxLikes(head));
+        case 3: printf("\nHighest likes in friend list is friend %s : %d",name, maxLikes(head));
                 break;
         case 4: exit(0);
     }
