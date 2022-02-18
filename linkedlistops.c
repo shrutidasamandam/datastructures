@@ -69,6 +69,26 @@ void create2()
     } while (y != 0);
 }
 
+
+
+
+void sort(){
+    struct node *i, *j;
+    int temp;
+    for(i=start;i->next!=NULL;i=i->next)
+    {
+        for(j=i->next;j!=NULL;j=j->next)
+        {
+            if(i->info>j->info)
+            {
+                temp = i->info;
+                i->info=j->info;
+                j->info = temp;
+            }
+        }
+    }
+}
+
 void display()
 {
     struct node *ptr;
@@ -104,35 +124,6 @@ void reverse ()
     start = prev;
 }
 
-void sort()
-{
-    int swapped, i;
-    struct node *ptr1;
-    struct node *lptr = NULL;
-
-    if (start == NULL)
-        return;
-
-    do
-    {
-        swapped = 0;
-        ptr1 = start;
-
-        while (ptr1->next != lptr)
-        {
-            if (ptr1->info > ptr1->next->info)
-            {
-                int temp = ptr1->info;
-                ptr1->info = ptr1->next->info;
-                ptr1->next->info = temp;
-                swapped = 1;
-            }
-            ptr1 = ptr1->next;
-        }
-        lptr = ptr1;
-    } while (swapped);
-}
-
 void concat ()
 {
      struct node *ptr;
@@ -149,6 +140,7 @@ void concat ()
         ptr = ptr->next;
     ptr->next = start2;
 }
+
 int main()
 {
     int choice;
