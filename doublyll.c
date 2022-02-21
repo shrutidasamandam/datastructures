@@ -1,34 +1,121 @@
 #include <stdio.h>
-#include<conio.h>
-#include<stdlib.h>
+#include <stdlib.h>
 
-struct node
+struct node 
 {
+    struct node *prev;
     int data;
-    struct node*next;
-    struct node*prev;
+    struct node *next;
 };
-struct node*head=0;
-struct node*tail=0;
-void create();
-void insertbeg();
-void delfrompos();
-void display();
+struct node *head = NULL;
+
+void insert_left()
+{
+    int loc;
+    struct node *temp;
+    struct node *newnode = (struct node*)malloc(sizeof(struct node));
+    printf("\nEnter node value");
+    scanf("%d",&newnode->data);
+    newnode->next = NULL;
+    newnode->prev = NULL;
+
+    printf("\nEnter value of node before which new node is inserted to left of");
+    scanf("%d",&loc);
+    temp = head;
+    struct node *temp1;
+    while(temp->data!=loc)
+    {
+        temp1 = temp;
+        temp = temp->next;
+    }
+    newnode->prev=temp1;
+    newnode->next=temp;
+    temp1->next = newnode;
+    temp->prev = newnode;
+}
+
+void del_spec()
+{
+    struct node *ptr, *temp;
+    int val;
+    printf("\nEnter value");
+    scanf("%d",&val);
+    temp=head;
+
+    while(temp->data!=val)
+        temp=temp->next;
+    if(temp->next==NULL)
+    {
+        printf("\nCan't delete");
+    } else if(temp->next->next==NULL)
+    {
+        temp->next=NULL;
+    } else {
+        ptr = temp->next;
+        temp->next = ptr->next;
+        ptr->next->prev = temp;
+        free(ptr);
+    }
+}
+
+void create()
+{
+    int num = 1;
+    while(num)
+    {
+        struct node *newnode = (struct node*)malloc(sizeof(struct node));
+        struct node *temp;
+        printf("\nEnter new node value");
+        scanf("%d",&newnode->data);
+        newnode->next = NULL;
+        newnode->prev = NULL;
+
+        if(head==NULL)
+        {
+            head=newnode;
+        } else {
+            temp = head;
+            while(temp->next!=NULL)
+            {
+                temp=temp->next;
+            }
+            temp->next=newnode;
+        }
+        printf("Do you want to create more nodes 1[yes] and 0[no]");
+        scanf("%d",&num);
+    }
+}
+
+void display()
+{
+    struct node *temp;
+    if(head==NULL)
+    {
+        printf("\nEmpty list");
+    } else {
+        temp = head;
+        while(temp!=NULL)
+        {
+            printf("\n%d",temp->data);
+            temp = temp->next;
+        }
+    }
+}
 
 int main()
 {   
     int ch;
     while(1)
     {
-    printf("\n1.create\n2.insert at beginning\n3.delete from a position\n4.display\n5.exit\n");
+    printf("\n1.Create\n2.Insert a new node to the left of the node\n3.Delete the node based on a specific value\n4.Display\n5.Exit\n");
     scanf("%d",&ch);
     switch(ch)
     {
         case 1: create();
         break;
-        case 2: insertbeg();
+        case 2: insert_left();
         break;
-        case 3: delfrompos();
+        case 3: del_spec();
         break;
         case 4: display();
         break;
@@ -37,128 +124,4 @@ int main()
     }
 }
     return 0;
-}
-
-void create()
-{   
-    struct node*newnode;
-    struct node*temp;
-    int ch=1;
-    while(ch)
-    {
-        newnode=(struct node*)malloc(sizeof(struct node));
-        printf("\nenter the data\n");
-        scanf("%d",&newnode->data);
-        newnode->next=0;
-        newnode->prev=0;
-        if(head==0)
-        {
-            head=newnode;
-            temp=newnode;
-            tail=newnode;
-        }
-        else
-        {
-            temp->next=newnode;
-            newnode->prev=temp;
-            temp=newnode;
-            tail=newnode;
-        }
-        printf("\n do you want to continue adding elements 0/1?\n");
-        scanf("%d",&ch);
-        
-    }
-}
-
-void display()
-{
-    struct node*temp;
-    if(head==0)
-    {
-        printf("\nlist empty\n");
-        return;
-    }
-    else
-    {
-        temp=head;
-    while(temp!=0)
-    {
-        printf("\n%d",temp->data);
-        temp=temp->next;
-    }
-    }
-}
-
-void insertbeg()
-{
-  struct node*newnode;
-  newnode=(struct node*)malloc(sizeof(struct node));
-  printf("\n enter the data\n");
-  scanf("%d",&newnode->data);
-  newnode->next=0;
-  newnode->prev=0;
-  if(head==0)
-  {
-      head=newnode;
-      tail=newnode;
-  }
-  else
-  {
-      head->prev=newnode;
-      newnode->next=head;
-      head=newnode;
-  }
-}
-
-void delfrompos()
-{
-  
-    int val;
-    struct node*temp1;
-    if(head==0)
-    {
-        printf("\n empty list\n");
-        return;
-    }
-    else
-    {
-       
-        temp1=head;
-         printf("\nenter the value \n");
-        scanf("%d",&val);
-        while(temp1!=0)
-        {   
-            if(temp1->data==val && temp1->prev==0)
-            {
-            temp1=head;
-            head=head->next;
-            head->prev=0;
-            free(temp1);
-            return;
-            }
-            else if(temp1->data==val && temp1->next==0)
-            {  
-            tail=temp1->prev;
-            temp1->prev->next=0;
-            free(temp1);
-            return;
-            }
-            else
-            {  
-              
-                if(temp1->data==val)
-                {
-                    temp1->prev->next=temp1->next;
-                     temp1->next->prev=temp1->prev;
-                     
-                     free(temp1);
-                     return;
-                }
-                  temp1=temp1->next;
-            }
-            
-            
-        }
-    }
-       
 }
