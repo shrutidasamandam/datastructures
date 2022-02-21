@@ -1,104 +1,98 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct node
-{
-    int info;
+struct node {
+    int data;
     struct node *next;
 };
-struct node *head=NULL;
+struct node *start = NULL;
 
 void create()
 {
     struct node *temp = (struct node*)malloc(sizeof(struct node));
-    struct node *ptr;
-    if(temp==NULL)
+    if(temp == NULL)
     {
         printf("\nInsufficient memory space");
     }
-    printf("\nEnter data value of node");
-    scanf("%d",&temp->info);
-    temp->next=NULL;
-    if(head==NULL)
+    printf("\nEnter data value for node");
+    scanf("%d",&temp->data);
+    temp->next = NULL;
+    if(start==NULL)
     {
-        head=temp;
+        start = temp;
     } else {
-        ptr=head;
-        while(ptr->next!=NULL)
-        {
-            ptr=ptr->next;
-        }
-        ptr->next=temp;
+        temp->next=start;
+        start=temp;
     }
 }
 
 void display()
 {
     struct node *ptr;
-    if(head==NULL)
+    if(start == NULL)
     {
         printf("\nEmpty list");
     } else {
-        ptr=head;
+        ptr = start;
         while(ptr!=NULL)
         {
-            printf("\n%d",ptr->info);
-            ptr=ptr->next;
+            printf("\n%d",ptr->data);
+            ptr = ptr->next;
         }
     }
 }
 
-void del_front()
+void del_pos()
 {
-    struct node *temp;
-    if(head==NULL)
+    struct node *temp, *temp1;
+    int loc,i;
+    printf("\nEnter position which you would like to delete");
+    scanf("%d",&loc);
+    temp = start;
+    for(i=0;i<loc;i++)
     {
-        printf("\nEmpty list");
-    } else {
-        temp=head;
-        head=temp->next;
+        temp1 = temp;
+        temp = temp->next;
+        if(temp == NULL)
+        {
+            printf("\nPosition not found");
+        }
+        temp1->next = temp->next;
         free(temp);
     }
 }
 
 void del_end()
 {
-    // temp - the last node, temp1 - the node before the last node
-    struct node *temp,*temp1;
-    if(head==NULL)
+    struct node *temp, *temp1;
+    if(start == NULL)
     {
         printf("\nEmpty list");
-    } else if(head->next==NULL) {
-        temp=head;
-        free(head);
-    } else {
-        temp=head;
-        while(temp->next!=NULL){
-            temp1=temp;
-            temp=temp->next;
+    } else if (start->next==NULL) {
+        temp = start;
+        free(start);
+    } else if(start->next!=NULL) {
+        temp = start;
+        while(temp->next!=NULL)
+        {
+            temp1 = temp;
+            temp = temp->next;
         }
-        temp1->next=NULL;
+        temp1->next = NULL;
         free(temp);
     }
 }
 
-void del_pos()
+void del_beg()
 {
-    struct node *temp,*temp1;
-    int loc,i;
-    printf("\nEnter position from which node has to be deleted");
-    scanf("%d",&loc);
-    temp=head;
-    for(i=0;i<=loc;i++)
+    struct node *ptr;
+    if(start==NULL)
     {
-        temp1=temp;
-        temp=temp->next;
-        if(temp==NULL)
-        {
-            printf("\nCannot be deleted");
-        }
-        temp1->next=temp->next;
-        free(temp);
+        printf("\nEmpty list");
+    } else {
+        ptr = start;
+        start = ptr->next;
+        free(ptr);
     }
 }
 
@@ -129,7 +123,7 @@ int main()
             del_end();
             break;
         case 4:
-            del_front();
+            del_beg();
             break;
         case 5:
             del_pos();
