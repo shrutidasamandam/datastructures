@@ -1,144 +1,135 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-struct node {
-    int info;
+struct node 
+{
+    struct node *prev;
     struct node *next;
+    int data;
 };
-struct node *start = NULL;
 struct node *start2 = NULL;
+struct node *start = NULL;
 
-void create()
-{
-    struct node *temp, *ptr;
-    temp = (struct node *)malloc(sizeof(struct node));
-    if (temp == NULL)
-    {
-        printf("\nOut of Memory Space");
-        exit(0);
-    }
-    printf("\nEnter the data value for the node:");
-    scanf("%d", &temp->info);
-    temp->next = NULL;
-    if (start == NULL)
-    {
-        start = temp;
-    }
-    else
-    {
-        ptr = start;
-        while (ptr->next != NULL)
-        {
-            ptr = ptr->next;
-        }
-        ptr->next = temp;
-    }
-}
-
-void create2()
-{
-    struct node *newnode;
-    struct node *temp;
-     int s, y;
-    printf("enter elements to create list 2\n");
-    do
-    {
-        printf("Enter integer  : \n");
-        scanf("%d", &s);
-        newnode = (struct node *)malloc(sizeof(struct node));
-        newnode->info = s;
-        if (start2 == NULL)
-        {
-            newnode->next = NULL;
-            start2 = newnode;
-            printf("first node of linked list created\n");
-        }
-        else
-        {
-            temp = start2;
-            while (temp->next != NULL)
-            {
-                temp = temp->next;
-            }
-            temp->next = newnode;
-            newnode->next = NULL;
-            printf("Node created\n");
-        }
-        printf("do you want to continue adding:0[no] or 1[yes]\n");
-        scanf("%d", &y);
-    } while (y != 0);
-}
-
-
-
-
-void sort(){
-    struct node *i, *j;
-    int temp;
-    for(i=start;i->next!=NULL;i=i->next)
-    {
-        for(j=i->next;j!=NULL;j=j->next)
-        {
-            if(i->info>j->info)
-            {
-                temp = i->info;
-                i->info=j->info;
-                j->info = temp;
-            }
-        }
-    }
-}
-
-void display()
+void concat()
 {
     struct node *ptr;
-    if (start == NULL)
+    if(start == NULL)
     {
-        printf("\nList is empty:");
-        return;
+        start = start2;
     }
-    else
+    if(start2 == NULL)
     {
-        ptr = start;
-        printf("\nThe List elements are:");
-        while (ptr != NULL)
+        start2 = start;
+    }
+    ptr = start;
+    while(ptr->next!=NULL)
+    ptr=ptr->next;
+    ptr->next=start2;
+}
+
+void sort()
+{
+    struct node *i,*j;
+    int temp;
+    for(i=start; i->next!=NULL ; i=i->next)
+    {
+        for(j=i->next; j!=NULL; j=j->next)
         {
-            printf("\n%d", ptr->info);
-            ptr = ptr->next;
+            if(i->data>j->data)
+            {
+                temp = i->data;
+                i->data = j->data;
+                j->data = temp;
+            }
         }
     }
 }
 
-void reverse ()
+void reverse()
 {
     struct node *prev = NULL;
     struct node *current = start;
     struct node *next = NULL;
-    while (current != NULL)
+
+    while(current!=NULL)
     {
-        next = current -> next;
-        current -> next = prev;
+        next = current->next;
+        current->next = prev;
         prev = current;
         current = next;
     }
     start = prev;
 }
 
-void concat ()
+void create2()
 {
-     struct node *ptr;
-    if (start == NULL)
+    int num = 1;
+    struct node *newnode = (struct node*)malloc(sizeof(struct node));
+    struct node *temp;
+
+    while(num)
     {
-        start = start2;
+        int s,y;
+        printf("\nEnter integer");
+        scanf("%d",&s);
+        newnode->data = s;
+
+        if(start2 == NULL)
+        {
+            newnode->next = NULL;
+            start2 = newnode;
+        } else {
+          temp = start2;
+          while(temp->next!=NULL)
+          {
+              temp=temp->next;
+          }
+          temp->next = newnode;
+          newnode ->next = NULL;   
+        }  
+        printf("Do you want to create more nodes 1[yes] and 0[no]");
+        scanf("%d",&num);
     }
-    if (start2 == NULL)
+}
+
+void create()
+{
+    struct node *temp = (struct node*)malloc(sizeof(struct node));
+    struct node *ptr;
+    if(temp == NULL)
     {
-        start2 = start;
+        printf("\nOut of memory space");
     }
-    ptr = start;
-    while (ptr->next != NULL)
-        ptr = ptr->next;
-    ptr->next = start2;
+    printf("\nEnter data value for node");
+    scanf("%d",&temp->data);
+    temp->next = NULL;
+    if(start == NULL)
+    {
+        start = temp;
+    } else {
+        ptr = start;
+        while(ptr->next!=NULL)
+        {
+            ptr=ptr->next;
+        }
+        ptr->next = temp;
+    }
+}
+
+void display()
+{
+    struct node *ptr;
+    if(start == NULL)
+    {
+        printf("\nEmpty list");
+    } else {
+        ptr = start;
+        while(ptr!=NULL)
+        {
+            printf("\n%d",ptr->data);
+            ptr = ptr->next;
+        }
+    }
 }
 
 int main()
