@@ -1,4 +1,6 @@
-// all operations for singly linked list
+// all singly 
+
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -9,114 +11,122 @@ struct node {
 struct node *start = NULL;
 struct node *start2 = NULL;
 
-// insertion at beginning
 void insertbeg(int item)
 {
-    struct node *newnode;
-    newnode = (struct node*)malloc(sizeof(struct node));
+    struct node *newnode = (struct node*)malloc(sizeof(struct node));
     if(newnode == NULL)
     {
-        printf("\nList full");
-    }
-    newnode->data = item;
+        printf("\nNot enough memory");
+    } 
     newnode->next = NULL;
+    newnode->data = item;
     if(start == NULL)
     {
-        start = newnode;
+        start=newnode;
     } else {
         newnode->next = start;
         start = newnode;
     }
-
 }
 
-// insertion at end
-void insertened(int item)
+void insertend(int item)
 {
-    struct node *newnode, *ptr;
-    newnode = (struct node*)malloc(sizeof(struct node));
+    struct node *newnode = (struct node*)malloc(sizeof(struct node));
+    struct node *ptr;
     if(newnode == NULL)
     {
-        printf("\nList full");
+        printf("\nNot enough memory");
     }
     newnode->data = item;
     newnode->next = NULL;
-    if(start == NULL)
+    if (start == NULL)
     {
         start = newnode;
     } else {
-        ptr = start;
+        ptr=start;
         while(ptr->next!=NULL)
         {
             ptr=ptr->next;
         }
-        ptr->next = newnode;
+        ptr->next=newnode;
     }
-
 }
 
-// insertion after spec node
 void insertafter(int item)
 {
-struct node *newnode, *ptr;
-int i,pos;
-newnode = (struct node*)malloc(sizeof(struct node));
-if(newnode == NULL)
-{
-    printf("\nMemory space not allocated");
-}
-printf("\nEnter position for new node to be inserted");
-scanf("%d",&pos);
-newnode->data = item;
-newnode->next = NULL;
-
-if(pos==0)
-{
-    newnode->next = start;
-    start=newnode;
-} else {
-    ptr=start;
-    for(i=0;i<pos-1;i++)
+    struct node *newnode = (struct node*)malloc(sizeof(struct node));
+    struct node *ptr;
+    int i,pos;
+    if(newnode == NULL)
     {
-        ptr = ptr->next;
-        if(ptr==NULL)
-        {
-            printf("\nPosition not found");
-        }
+        printf("\nFull");
     }
-    newnode->next = ptr->next;
-    ptr->next = newnode;
-}
+    newnode->next = NULL;
+    newnode->data = item;
+
+    if(pos==0)
+    {
+        newnode->next = start;
+        start = newnode;
+    } else {
+        ptr = start;
+        for(i=0; i<pos-1; i++)
+        {
+            ptr=ptr->next;
+            if(ptr == NULL)
+            {
+                printf("\nPosition not found");
+            }
+        }
+        newnode->next = ptr->next;
+        ptr->next = newnode;
+
+    }
 }
 
 void insertbefore(int item)
 {
-struct node *newnode, *ptr, *preptr;
-int loc;
-newnode = (struct node*)malloc(sizeof(struct node));
-newnode->data = item;
-newnode->next = NULL;
+    struct node *preptr, *ptr;
+    struct node *newnode = (struct node*)malloc(sizeof(struct node));
+    int loc;
+    newnode->data = item;
+    newnode->next = NULL;
 
-if(start == NULL)
-{
-    start = newnode;
-} else {
-    printf("\nEnter location before which you would like to insert");
-    scanf("%d",&loc);
-    ptr=start;
-
-    while(ptr->data!=loc;)
+    if(start == NULL)
     {
-        preptr=ptr;
-        ptr=ptr->next;
+        start = newnode;
+    } else {
+        printf("\nEnter location to insert  before");
+        scanf("%d",&loc);
+        ptr = start;
+
+        while(ptr->data!=loc)
+        {
+            preptr = ptr;
+            ptr = ptr->next;
+        }
+        newnode->next = ptr;
+        preptr->next = newnode;
     }
-    newnode->next=ptr;
-    preptr->next=newnode;
-}
 }
 
-// deletion at beginning
-void beg_del()
+void display()
+{
+    struct node *ptr;
+    if(start == NULL)
+    {
+        printf("\nEmpty list");
+    } else {
+        ptr = start;
+        while(ptr!=NULL)
+        {
+            printf("\n%d",ptr->data);
+            ptr=ptr->next;
+        }
+    }
+}
+
+void deletebeg()
 {
     struct node *ptr;
     if(start == NULL)
@@ -127,69 +137,67 @@ void beg_del()
         start = ptr->next;
         free(ptr);
     }
-    
 }
 
-// deletion at end
-void last_del()
+void deleteend()
 {
-    struct node *ptr,*preptr;
+    struct node *preptr, *ptr;
     if(start == NULL)
     {
         printf("\nEmpty list");
     } else {
-        ptr=start;
+        ptr = start;
         while(ptr->next!=NULL)
         {
-            preptr=ptr;
-            ptr=ptr->next;
+            preptr = ptr;
+            ptr = ptr->next;
         }
         preptr->next = NULL;
         free(ptr);
     }
-   
 }
 
-
-// deletion of node after
-void delafter()
+void deleteafter()
 {
-    struct node *ptr,*ptr1;
-    int loc,i;
-    scanf("%d",&loc);
-    ptr = start;
-    for(i=0;i<loc;i++)
+    struct node *preptr, *ptr;
+    int i,loc;
+    if(start == NULL)
     {
-        ptr1=ptr;
+        printf("\nEmpty list");
+    } else {
+    ptr = start;
+    for(i=0; i<loc; i++)
+    {
+        preptr = ptr;
         ptr=ptr->next;
-
         if(ptr == NULL)
         {
-            printf("\nThere are less than %d elements in this list",loc);
+            printf("\nCannot find location");
         }
     }
-    ptr1->next=ptr->next;
+    preptr->next = ptr->next;
     free(ptr);
+    }
 }
 
-// searching 
 void search()
 {
+    int i,item,flag;
     struct node *ptr;
-    int item, i=0, flag;
     ptr = start;
 
     if(ptr == NULL)
     {
-        printf("\nEmpty list");
+        printf("\nEmpty");
     } else {
-        printf("\nEnter items which you would like to search?");
+        printf("\nEnter item to find");
         scanf("%d",&item);
+
         while(ptr!=NULL)
         {
-            if(ptr->data == item)
+            if(ptr->data==item)
             {
-                printf("\nItem found at location %d",i+1);
+                printf("\nItem found at %d",i+1);
                 flag = 0;
             } else {
                 flag = 1;
@@ -197,100 +205,46 @@ void search()
             i++;
             ptr=ptr->next;
         }
-        if(flag==1)
+        if(flag == 1)
         {
             printf("\nItem not found");
         }
     }
 }
 
-//counting
 void count()
 {
+    int count = 0;
     struct node *temp;
     temp = start;
-    int count = 0;
     while(temp!=NULL)
     {
         temp=temp->next;
         count++;
     }
-    printf("\nTotal number of counts is %d",count);
+    printf("\ntotal number of nodes is %d",count);
 }
 
-//for concat one
-void create2()
-{
-    int num = 1;
-    struct node *newnode = (struct node*)malloc(sizeof(struct node));
-    struct node *temp;
-
-    while(num)
-    {
-        int s,y;
-        printf("\nEnter integer");
-        scanf("%d",&s);
-        newnode->data = s;
-
-        if(start2 == NULL)
-        {
-            newnode->next = NULL;
-            start2 = newnode;
-        } else {
-          temp = start2;
-          while(temp->next!=NULL)
-          {
-              temp=temp->next;
-          }
-          temp->next = newnode;
-          newnode ->next = NULL;   
-        }  
-        printf("Do you want to create more nodes 1[yes] and 0[no]");
-        scanf("%d",&num);
-    }
-}
-
-// concatenation
 void concat()
 {
     struct node *ptr;
-    if(start == NULL)
-    {
-        start = start2;
+    if(start == NULL){
+    start = start2;
     }
-    if(start2 == NULL)
-    {
-        start2 = start;
+    if(start2 == NULL){
+    start2 = start;
     }
-    ptr=start;
+    ptr = start;
     while(ptr->next!=NULL)
     ptr=ptr->next;
-    ptr->next=start2;
+    ptr->next = start;
 }
 
-//sorting
-void sort()
-{
-    struct node *i, *j;
-    int temp;
-    for(i=start; i->next!=NULL; i=i->next){
-        for(j=i->next; j!=NULL; j=j->next){
-            if(i->data>j->data)
-            {
-                temp=i->data;
-                i->data = j->data;
-                j->data = temp;
-            }
-        }
-    }
-}
-
-//reverse
 void reverse()
 {
-    struct node *prev = NULL;
     struct node *current = item;
     struct node *next = NULL;
+    struct node *prev = NULL;
 
     while(current!=NULL)
     {
@@ -302,76 +256,47 @@ void reverse()
     start = prev;
 }
 
-
-
-// displaying
-void display()
+void sort()
 {
-    struct node *ptr;
-    if(start == NULL) {
-        printf("\nEmpty list");
-    } else {
-        ptr = start;
-        while(ptr!=NULL)
+    struct node *i,*j;
+    int temp;
+    for(i=start; i->next!=NULL; i=i->next)
+    {
+        for(j=i->next; j!=NULL; j=j->next)
         {
-            printf("\n%d",ptr->data);
-            ptr = ptr->next;
+            if(i->info>j->info)
+            {
+                temp = i->data;
+                i->data = j->data;
+                j->data = temp;
+            }
         }
     }
 }
 
-int main()
-{   
-    int ch;
-    int item;
-    while(1)
+void create2()
+{
+    struct node *temp;
+    int s,y;
+    do
     {
-    printf("\n1.Insertion at beginning\n2.Insertion at end\n3.Insertion after\n4.Deletion at beginning\n5.Deletion at end\n6.Deletion after\n7.search\n8.traverse\n9.exit\n10.insert before");
-    scanf("%d",&ch);
-    switch(ch)
-    {
-        case 1: 
-        printf("\nEnter data value");
-        scanf("%d",&item);
-        insertbeg(item);
-        break;
-        case 2: 
-        printf("\nEnter data value");
-        scanf("%d",&item);
-        insertened(item);
-        break;
-        case 3:
-        printf("\nEnter data value");
-        scanf("%d",&item); 
-        insertafter(item);
-        break;
-        case 4: 
-        beg_del();
-        break;
-        case 5: 
-        last_del();
-        break;
-        case 6:
-        delafter();
-        break;
-        case 7:
-        search();
-        break;
-        case 8:
-        traverse();
-        break;
-        case 9:
-        exit(0);
-        break;
-        case 10:
-        printf("\nEnter data value");
-        scanf("%d",&item);
-        insertbefore(item);
-        default:
-        printf("\nWrong choice");
-        break;
-        
-    }
-}
-    return 0;
+       struct node *newnode = (struct node*)malloc(sizeof(struct node));
+        printf("\nEnter integer: ");
+        scanf("%d",newnode->data);
+        newnode->next = NULL;
+
+        if(start2 == NULL)
+        {
+            start2 = newnode;
+        } else {
+            temp = start2;
+            while(temp->next!=NULL)
+            {
+                temp=temp->next;
+            }
+            temp->next = newnode;
+        } 
+        printf("\nDo you want to continue adding 0[no] or 1[yes]");
+        scanf("%d",y);
+    }while(y!=0);
 }
