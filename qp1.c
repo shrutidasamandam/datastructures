@@ -1,6 +1,3 @@
-/* Write a complete C-Function to implement the deletion of node in a Binary
-Search Tree with appropriate explanation with example. */
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -32,7 +29,6 @@ node insert(node root, int ele)
     }
     return root;
 }
-
 void inorder(node root)
 {
     if(root==NULL)
@@ -49,18 +45,17 @@ node findmin(node root)
     {
         root=root->left;
     }
-    return root; 
+    return root;
 }
-
 node delete(node root, int info)
 {
     if(root == NULL)
     {
         return root;
     } else if (info < root->data) {
-        root->left = delete(root->left);
+        root->left = delete(root->left,info);
     } else if (info > root->data) {
-        root->right = delete(root->right);
+        root->right = delete(root->right,info);
     } else {
         // no child
         if(root->left == NULL && root->right == NULL) {
@@ -84,15 +79,14 @@ node delete(node root, int info)
     }
     return root;
 }
-
 int main()
 {
     node root = NULL;
-    int e, ch = 1;
+    int e,j, ch = 1;
 
     while (ch != 5)
     {
-        printf("\n\n1.Insert\n2.PreOrder\n3.InOrder\n4.PostOrder\n");
+        printf("\n\n1.Insert\n2.inorder\n3.delete\n4.exit\n");
         printf("5.Exit\n");
         scanf("%d", &ch);
         printf("\n");
@@ -106,7 +100,7 @@ int main()
             break;
 
         case 2:
-            preorder(root);
+            inorder(root);
             break;
 
         case 3:
@@ -115,7 +109,7 @@ int main()
             root = delete(root,j);
             break;
 
-        case 5:
+        case 4:
             printf("Exiting.");
             exit(1);
 
